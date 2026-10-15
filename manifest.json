@@ -1,10 +1,9 @@
 {
-  "id": "/",
   "name": "Secure Operations Center",
   "short_name": "SOC Console",
   "description": "An offline-capable cybersecurity operations console demo: dashboard, platform panels and monitoring modules running entirely in the browser.",
-  "start_url": "/",
-  "scope": "/",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "display_override": ["window-controls-overlay"],
   "orientation": "any",
@@ -59,26 +58,26 @@
     {
       "name": "Dashboard",
       "short_name": "Dashboard",
-      "url": "/dashboard.html",
+      "url": "dashboard.html",
       "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" }]
     },
     {
       "name": "Location Tracking",
       "short_name": "Location",
-      "url": "/location.html",
+      "url": "location.html",
       "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" }]
     },
     {
       "name": "Notifications",
       "short_name": "Alerts",
-      "url": "/notifications.html",
+      "url": "notifications.html",
       "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" }]
     }
   ],
   "protocol_handlers": [
     {
       "protocol": "web+soc",
-      "url": "/dashboard.html?via=%s"
+      "url": "dashboard.html?via=%s"
     }
   ]
 }
