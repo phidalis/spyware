@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Location Tracking</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SOC Console">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-map-marked-alt"></i> Location Panel</h2>
+                <a href="dashboard.html" class="back-btn">
+                    <i class="fas fa-arrow-left"></i> Dashboard
+                </a>
+            </div>
+
+            <div class="sidebar-menu">
+                <div class="menu-section">
+                    <h3><i class="fas fa-eye"></i> Monitoring</h3>
+                    <a href="#" class="menu-item active" data-tab="live">
+                        <i class="fas fa-street-view"></i> Live Map
+                    </a>
+                    <a href="#" class="menu-item" data-tab="history">
+                        <i class="fas fa-history"></i> Location History
+                    </a>
+                    <a href="#" class="menu-item" data-tab="geofences">
+                        <i class="fas fa-draw-polygon"></i> Geofences
+                    </a>
+                </div>
+
+                <div class="menu-section">
+                    <h3><i class="fas fa-cogs"></i> Tools</h3>
+                    <a href="#" class="menu-item" id="loc-export">
+                        <i class="fas fa-file-export"></i> Export Report
+                    </a>
+                    <a href="dashboard.html" class="menu-item">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                    <a href="index.html" class="menu-item logout">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="connection-status">
+                    <i class="fas fa-circle status-online"></i>
+                    <span>GPS: <strong>Active</strong></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="content-header">
+                <h1><i class="fas fa-map-marked-alt"></i> Location Tracking</h1>
+                <div class="header-actions">
+                    <button class="btn-refresh" id="loc-refresh">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                    <button class="btn-add-target" id="loc-track">
+                        <i class="fas fa-pause"></i> Pause Tracking
+                    </button>
+                </div>
+            </div>
+
+            <!-- Live Map -->
+            <div class="tab-content active" id="live-tab">
+                <div class="panel">
+                    <div class="panel-head">
+                        <h3><i class="fas fa-crosshairs"></i> Live Location</h3>
+                        <span class="panel-tag live">LIVE GPS</span>
+                    </div>
+                    <div class="map-wrap">
+                        <div class="map-canvas" id="map-canvas">
+                            <span class="map-road" style="top:32%;left:0;right:0;height:8px"></span>
+                            <span class="map-road" style="top:0;bottom:0;left:62%;width:8px"></span>
+                            <span class="map-road" style="top:70%;left:0;right:0;height:6px"></span>
+                            <span class="map-road" style="top:0;bottom:0;left:24%;width:6px"></span>
+                            <span class="map-target" id="map-target" style="top:50%;left:50%">
+                                <span class="target-pulse"></span>
+                                <i class="fas fa-street-view"></i>
+                            </span>
+                        </div>
+                        <div class="map-readout">
+                            <div class="readout-row"><span>Coordinates</span><b id="loc-coords">—</b></div>
+                            <div class="readout-row"><span>Address</span><b id="loc-address">—</b></div>
+                            <div class="readout-row"><span>Accuracy</span><b id="loc-accuracy">—</b></div>
+                            <div class="readout-row"><span>Speed</span><b id="loc-speed">—</b></div>
+                            <div class="readout-row"><span>Heading</span><b id="loc-heading">—</b></div>
+                            <div class="readout-row"><span>Battery</span><b id="loc-battery">—</b></div>
+                            <div class="readout-row"><span>Updated</span><b id="loc-updated">just now</b></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Location History -->
+            <div class="tab-content" id="history-tab">
+                <div class="panel">
+                    <div class="panel-head">
+                        <h3><i class="fas fa-history"></i> Location History</h3>
+                        <span class="panel-tag">LAST 24H</span>
+                    </div>
+                    <div class="loc-history" id="loc-history"></div>
+                </div>
+            </div>
+
+            <!-- Geofences -->
+            <div class="tab-content" id="geofences-tab">
+                <div class="panel">
+                    <div class="panel-head">
+                        <h3><i class="fas fa-draw-polygon"></i> Geofence Zones</h3>
+                        <span class="panel-tag">5 ZONES</span>
+                    </div>
+                    <div class="geo-list" id="loc-geofences"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="platform.js"></script>
+    <script src="modules.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            initializeLocationPanel();
+        });
+    </script>
+    <script src="pwa.js"></script>
+</body>
+</html>

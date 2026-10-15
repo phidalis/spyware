@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Offline — Secure Operations Center</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #f7fafc;
+            padding: 24px;
+            text-align: center;
+        }
+        .wrap { max-width: 420px; }
+        .badge {
+            width: 84px; height: 84px; margin: 0 auto 22px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 22px;
+            background: rgba(66, 153, 225, 0.15);
+            border: 1px solid rgba(66, 153, 225, 0.4);
+            font-size: 2.2rem; color: #4299e1;
+        }
+        h1 { font-size: 1.5rem; margin-bottom: 10px; }
+        p { color: #a0aec0; font-size: 0.95rem; line-height: 1.6; margin-bottom: 24px; }
+        .btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 12px 22px; border-radius: 10px;
+            background: #4299e1; color: #fff; font-weight: 600;
+            text-decoration: none; border: none; cursor: pointer; font-size: 0.95rem;
+        }
+        .btn:hover { background: #3182ce; }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="badge"><i class="fas fa-shield-alt"></i></div>
+        <h1>Connection unavailable</h1>
+        <p>The console shell is cached, but this page needs a network connection to load. Check your connection and try again.</p>
+        <button class="btn" onclick="window.location.reload()">
+            <i class="fas fa-rotate-right"></i> Retry
+        </button>
+    </div>
+</body>
+</html>

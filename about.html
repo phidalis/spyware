@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>About — Secure Operations Center</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SOC Console">
+</head>
+<body class="about-page">
+    <div class="about-wrap">
+        <div class="about-header">
+            <div class="brand-badge"><i class="fas fa-shield-alt"></i></div>
+            <h1>About This Project</h1>
+            <p>Cybersecurity awareness demonstration · build v2.4</p>
+        </div>
+
+        <div class="about-card notice">
+            <h2><i class="fas fa-triangle-exclamation"></i> Important Notice</h2>
+            <p>This application is an <strong>educational simulation</strong>. It is a front-end demonstration only and does <strong>not</strong> perform any real surveillance, monitoring, tracking, phishing, or device access. Every value displayed is fictional and generated locally in your browser.</p>
+            <p>Monitoring or accessing another person's device, messages, or location <strong>without their informed consent is illegal</strong> in most jurisdictions and is a serious criminal offence. This project exists to raise awareness of how such social-engineering and surveillance tactics can appear, so that people can recognise and avoid them.</p>
+        </div>
+
+        <div class="about-card">
+            <h2><i class="fas fa-cubes"></i> What's included</h2>
+            <ul>
+                <li>Operator dashboard with a live console</li>
+                <li>Platform panels: WhatsApp, Instagram, Facebook, TikTok, Telegram, Snapchat</li>
+                <li>Location tracking, parental controls, app usage, notification mirror, camera &amp; gallery</li>
+                <li>Phishing-link and payload generators (produce placeholder text only)</li>
+            </ul>
+            <p>All generated "links" and "files" contain placeholder text. No executable or malicious content is ever produced.</p>
+        </div>
+
+        <div class="about-card">
+            <h2><i class="fas fa-shield-halved"></i> Data &amp; privacy</h2>
+            <p>Nothing leaves your device. The demo stores generated items in your browser's local storage only and makes no network requests. Clearing site data removes everything.</p>
+        </div>
+
+        <div class="about-actions">
+            <a href="dashboard.html" class="about-btn"><i class="fas fa-tachometer-alt"></i> Back to Dashboard</a>
+            <a href="index.html" class="about-btn ghost"><i class="fas fa-sign-out-alt"></i> Sign out</a>
+        </div>
+
+        <div class="about-foot">Secure Operations Center · v2.4</div>
+    </div>
+    <script src="pwa.js"></script>
+</body>
+</html>

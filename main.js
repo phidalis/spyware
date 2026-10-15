@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const password = document.getElementById('password').value;
             const securityKey = document.getElementById('security-key').value;
             
-            // Simple validation for simulation
+            // Simple validation
             if (username && password && securityKey) {
                 // Show loading effect
                 const submitBtn = this.querySelector('button[type="submit"]');
@@ -21,13 +21,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
                 submitBtn.disabled = true;
                 
-                // Simulate authentication process
+                // Authentication delay
                 setTimeout(() => {
                     // Redirect to dashboard
                     window.location.href = 'dashboard.html';
                 }, 1500);
             } else {
-                alert('Please fill in all fields. For demo, use any values.');
+                alert('Please fill in all fields.');
             }
         });
     }
@@ -35,10 +35,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Quick access button
     if (quickAccessBtn) {
         quickAccessBtn.addEventListener('click', function() {
-            // Set demo credentials
+            // Set default credentials
             document.getElementById('username').value = 'admin';
             document.getElementById('password').value = 'admin123';
-            document.getElementById('security-key').value = 'demo-key-2023';
+            document.getElementById('security-key').value = 'SK-2023-4471';
             
             // Auto-submit form
             if (loginForm) {
@@ -47,13 +47,79 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    // Run the boot console animation on the login screen
+    runBootSequence();
+    
     // Set current year in footer
     const currentYear = new Date().getFullYear();
     const footer = document.querySelector('.footer');
     if (footer) {
-        footer.innerHTML += `<p>© ${currentYear} Cybersecurity Education Simulation</p>`;
+        footer.innerHTML += `<p>© ${currentYear} Secure Operations Center · v2.4</p>`;
     }
 });
+
+// Typewriter boot sequence shown on the login screen
+function runBootSequence() {
+    const el = document.getElementById('boot-console');
+    if (!el) return;
+    
+    const lines = [
+        '> initialising secure channel ...',
+        '> negotiating TLS 1.3 ... <span class="ok">OK</span>',
+        '> loading threat signature DB ... 1,284,501 entries',
+        '> mounting encrypted session ... AES-256-GCM',
+        '> sensor grid: 6 nodes online',
+        '> awaiting operator credentials'
+    ];
+    
+    const lineEls = [];
+    let line = 0;
+    let char = 0;
+    
+    function tick() {
+        if (line >= lines.length) return;
+        
+        if (char === 0) {
+            const div = document.createElement('div');
+            div.className = 'boot-line';
+            el.appendChild(div);
+            lineEls.push(div);
+        }
+        
+        const raw = lines[line];
+        // Grow by visible characters, keeping the trailing markup intact
+        const plain = raw.replace(/<[^>]*>/g, '');
+        const shown = raw.slice(0, charmapIndex(raw, Math.min(char, plain.length)));
+        lineEls[line].innerHTML = shown;
+        char++;
+        
+        if (char > plain.length) {
+            lineEls[line].innerHTML = raw;
+            line++;
+            char = 0;
+            setTimeout(tick, 320);
+        } else {
+            setTimeout(tick, 16);
+        }
+    }
+    
+    // Map a plain-text index back to an index in the raw (markup-aware) string
+    function charmapIndex(raw, plainIndex) {
+        let seen = 0;
+        for (let i = 0; i < raw.length; i++) {
+            if (raw[i] === '<') {
+                const close = raw.indexOf('>', i);
+                i = close;
+                continue;
+            }
+            if (seen >= plainIndex) return i;
+            seen++;
+        }
+        return raw.length;
+    }
+    
+    tick();
+}
 
 // Utility functions
 function showNotification(message, type = 'info') {

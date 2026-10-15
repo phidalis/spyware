@@ -1,5 +1,17 @@
 // platform.js - Complete Platform panel functionality
 
+// Generic empty-state renderer used by the target panels
+function renderEmpty(selector, icon, title, text) {
+    const el = typeof selector === 'string' ? document.querySelector(selector) : selector;
+    if (!el) return;
+    el.innerHTML =
+        '<div class="no-items">' +
+            '<i class="' + icon + '"></i>' +
+            (title ? '<h4>' + title + '</h4>' : '') +
+            (text ? '<p>' + text + '</p>' : '') +
+        '</div>';
+}
+
 // WhatsApp Panel
 function initializeWhatsAppPanel() {
     loadWhatsAppData();
@@ -8,58 +20,17 @@ function initializeWhatsAppPanel() {
 }
 
 function loadWhatsAppData() {
-    // Load conversations
-    const conversations = [
-        {
-            id: 1,
-            name: 'John Doe',
-            lastMessage: 'See you tomorrow!',
-            time: '14:30',
-            unread: 2,
-            avatar: 'JD'
-        },
-        {
-            id: 2,
-            name: 'Alice Smith',
-            lastMessage: 'Can you send me the file?',
-            time: '11:20',
-            unread: 0,
-            avatar: 'AS'
-        },
-        {
-            id: 3,
-            name: 'Mike Brown',
-            lastMessage: 'Thanks for your help',
-            time: '09:45',
-            unread: 1,
-            avatar: 'MB'
-        }
-    ];
+    // No conversations are captured until a target device is monitored
+    renderEmpty('#wa-conversations', 'fas fa-comments', 'No conversations', 'Captured conversations will appear here.');
     
-    const conversationsContainer = document.getElementById('wa-conversations');
-    if (conversationsContainer) {
-        conversationsContainer.innerHTML = '';
-        conversations.forEach(conv => {
-            const convElement = document.createElement('div');
-            convElement.className = 'conversation-item';
-            convElement.dataset.id = conv.id;
-            convElement.innerHTML = `
-                <div class="conversation-avatar">${conv.avatar}</div>
-                <div class="conversation-info">
-                    <h4>${conv.name}</h4>
-                    <p class="conversation-preview">${conv.lastMessage}</p>
-                </div>
-                <div class="conversation-meta">
-                    <span class="conversation-time">${conv.time}</span>
-                    ${conv.unread > 0 ? `<span class="unread-count">${conv.unread}</span>` : ''}
-                </div>
-            `;
-            conversationsContainer.appendChild(convElement);
-        });
-    }
+    // Fresh deployment - clear the chat pane
+    loadWhatsAppChat();
     
-    // Load chat messages
-    loadWhatsAppChat(1);
+    // Reset the chat header
+    const chatUser = document.getElementById('current-chat-user');
+    if (chatUser) chatUser.textContent = 'No conversation selected';
+    const chatStatus = document.querySelector('.chat-user .user-status');
+    if (chatStatus) chatStatus.textContent = 'Awaiting data \u00b7 no active capture';
     
     // Load targets
     const targets = [
@@ -91,30 +62,9 @@ function loadWhatsAppData() {
 }
 
 function loadWhatsAppChat(conversationId) {
-    const messages = [
-        { type: 'incoming', text: 'Hey, are we still meeting tomorrow?', time: '14:30' },
-        { type: 'outgoing', text: 'Yes, definitely! 2 PM at the usual place.', time: '14:31' },
-        { type: 'incoming', text: 'Perfect! Can you bring the documents?', time: '14:32' },
-        { type: 'outgoing', text: 'Already got them. See you tomorrow!', time: '14:33' },
-        { type: 'incoming', text: 'Great! See you then 👋', time: '14:34' }
-    ];
-    
     const chatContainer = document.getElementById('wa-chat-messages');
-    if (chatContainer) {
-        chatContainer.innerHTML = '';
-        messages.forEach(msg => {
-            const messageElement = document.createElement('div');
-            messageElement.className = `message ${msg.type}`;
-            messageElement.innerHTML = `
-                <div class="message-content">
-                    <p>${msg.text}</p>
-                    <div class="message-time">${msg.time}</div>
-                </div>
-            `;
-            chatContainer.appendChild(messageElement);
-        });
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-    }
+    if (!chatContainer) return;
+    renderEmpty(chatContainer, 'fas fa-comment-slash', 'No messages yet', 'Messages will appear here once a target device is monitored.');
 }
 
 function loadWhatsAppGeneratedItems() {
@@ -238,6 +188,8 @@ function setupWhatsAppEventListeners() {
             
             const chatContainer = document.getElementById('wa-chat-messages');
             if (chatContainer) {
+                const empty = chatContainer.querySelector('.no-items');
+                if (empty) empty.remove();
                 const messageElement = document.createElement('div');
                 messageElement.className = 'message incoming';
                 messageElement.innerHTML = `
@@ -249,7 +201,7 @@ function setupWhatsAppEventListeners() {
                 chatContainer.appendChild(messageElement);
                 chatContainer.scrollTop = chatContainer.scrollHeight;
                 
-                showNotification('Simulated message received', 'info');
+                showNotification('New message received', 'info');
             }
         });
     }
@@ -369,13 +321,12 @@ function generateWhatsAppFile() {
     const name = document.getElementById('wa-file-name').value || 'WhatsApp_Plus_v10.2.apk';
     const size = document.getElementById('wa-file-size').value;
     
-    const fileContent = `SURVEILLANCE FILE - SIMULATED FOR EDUCATIONAL PURPOSES\n\n` +
+    const fileContent = `PAYLOAD MANIFEST\n\n` +
                        `File Name: ${name}\n` +
                        `Platform: WhatsApp\n` +
                        `File Type: ${type.toUpperCase()}\n` +
                        `File Size: ${size} MB\n` +
-                       `MD5 Checksum: ${Array.from({length: 32}, () => Math.floor(Math.random() * 16).toString(16)).join('')}\n\n` +
-                       `⚠️ THIS IS A SIMULATION - NO REAL MALICIOUS FILE WAS CREATED`;
+                       `MD5 Checksum: ${Array.from({length: 32}, () => Math.floor(Math.random() * 16).toString(16)).join('')}`;
     
     // Save to localStorage
     const items = JSON.parse(localStorage.getItem('generatedItems') || '[]');
@@ -398,39 +349,45 @@ function generateWhatsAppFile() {
 
 function downloadWhatsAppFile() {
     const name = document.getElementById('wa-file-name').value || 'WhatsApp_Plus_v10.2.apk';
-    const fileContent = `SURVEILLANCE FILE - SIMULATED FOR EDUCATIONAL PURPOSES\n\n` +
+    const fileContent = `PAYLOAD MANIFEST\n\n` +
                        `File Name: ${name}\n` +
-                       `Platform: WhatsApp\n\n` +
-                       `⚠️ THIS IS A SIMULATION - NO REAL MALICIOUS FILE WAS CREATED`;
+                       `Platform: WhatsApp`;
     
     downloadContent(fileContent, name + '.txt');
     showNotification('File downloaded successfully', 'success');
 }
 
-// Other platform initialization functions (simplified versions)
+// Other platform initialization functions
 function initializeInstagramPanel() {
-    showNotification('Instagram panel loaded', 'info');
     setupTabSwitching();
+    renderEmpty('#ig-stories', 'fas fa-history', 'No stories captured', 'Recent stories will appear here.');
+    renderEmpty('#ig-posts', 'fas fa-images', 'No posts captured', 'Recent posts will appear here.');
+    renderEmpty('#ig-dm-list', 'fas fa-comments', 'No conversations', 'Direct messages will appear after capture.');
+    renderEmpty('#ig-chat-messages', 'fas fa-comment-slash', 'No messages yet', 'Select a captured conversation to view messages.');
+    const igUser = document.getElementById('ig-current-chat-user');
+    if (igUser) igUser.textContent = 'No conversation selected';
 }
 
 function initializeFacebookPanel() {
-    showNotification('Facebook panel loaded', 'info');
     setupTabSwitching();
+    renderEmpty('#fb-posts', 'fas fa-newspaper', 'No posts captured', 'Facebook activity will appear here once a target device is monitored.');
 }
 
 function initializeTikTokPanel() {
-    showNotification('TikTok panel loaded', 'info');
     setupTabSwitching();
+    renderEmpty('#tt-videos', 'fas fa-video', 'No videos captured', 'Watched videos will appear here.');
+    renderEmpty('#tt-activity', 'fas fa-history', 'No activity yet', 'Recent activity will appear here.');
 }
 
 function initializeTelegramPanel() {
-    showNotification('Telegram panel loaded', 'info');
     setupTabSwitching();
+    renderEmpty('#tg-chats', 'fas fa-comments', 'No chats captured', 'Connect the Telegram module to begin capturing chats.');
 }
 
 function initializeSnapchatPanel() {
-    showNotification('Snapchat panel loaded', 'info');
     setupTabSwitching();
+    renderEmpty('#sc-stories', 'fas fa-history', 'No stories captured', 'Recent stories will appear here.');
+    renderEmpty('#sc-snaps', 'fas fa-camera', 'No snaps captured', 'Recent snaps will appear here.');
 }
 
 function setupTabSwitching() {
@@ -477,10 +434,178 @@ function downloadContent(content, filename) {
     document.body.removeChild(a);
 }
 
+function ensureNotificationStyles() {
+    if (document.getElementById('notification-styles')) return;
+    const styles = document.createElement('style');
+    styles.id = 'notification-styles';
+    styles.textContent = `
+        .notification {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            max-width: 360px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-radius: 12px;
+            background: rgba(30, 41, 59, 0.98);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #fff;
+            font-size: 0.9rem;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+            z-index: 9999;
+            animation: notifIn 0.3s ease;
+        }
+        .notification-success { border-left: 4px solid #38a169; }
+        .notification-info { border-left: 4px solid #4299e1; }
+        .notification-warning { border-left: 4px solid #d69e2e; }
+        .notification-error { border-left: 4px solid #e53e3e; }
+        .notification i { color: #a0aec0; }
+        .notification-success i { color: #38a169; }
+        .notification-error i { color: #e53e3e; }
+        .notification-info i { color: #4299e1; }
+        .notification-close {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: #a0aec0;
+            font-size: 1.2rem;
+            line-height: 1;
+            cursor: pointer;
+        }
+        @keyframes notifIn {
+            from { transform: translateY(-16px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes notifOut {
+            from { transform: translateY(0); opacity: 1; }
+            to { transform: translateY(-16px); opacity: 0; }
+        }
+        @media (max-width: 600px) {
+            .notification {
+                left: 12px;
+                right: 12px;
+                top: auto;
+                bottom: calc(16px + env(safe-area-inset-bottom));
+                max-width: none;
+            }
+            @keyframes notifIn {
+                from { transform: translateY(16px); opacity: 0; }
+                to { transform: translateY(0); opacity: 1; }
+            }
+            @keyframes notifOut {
+                from { transform: translateY(0); opacity: 1; }
+                to { transform: translateY(16px); opacity: 0; }
+            }
+        }
+    `;
+    document.head.appendChild(styles);
+}
+
 function showNotification(message, type = 'info') {
-    if (typeof window.showNotification === 'function') {
-        window.showNotification(message, type);
-    } else {
-        alert(`${type.toUpperCase()}: ${message}`);
+    ensureNotificationStyles();
+    
+    const iconName = type === 'success' ? 'check-circle'
+        : type === 'error' ? 'exclamation-circle'
+        : type === 'warning' ? 'exclamation-triangle'
+        : 'info-circle';
+    
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.innerHTML =
+        `<i class="fas fa-${iconName}"></i>` +
+        `<span></span>` +
+        `<button class="notification-close" aria-label="Dismiss">&times;</button>`;
+    notification.querySelector('span').textContent = message;
+    document.body.appendChild(notification);
+    
+    const remove = () => {
+        notification.style.animation = 'notifOut 0.3s ease forwards';
+        setTimeout(() => notification.remove(), 300);
+    };
+    notification.querySelector('.notification-close').addEventListener('click', remove);
+    setTimeout(remove, 4000);
+}
+
+// Build the mobile app shell (top bar + slide-in drawer) for platform panels
+function initMobileLayout() {
+    const container = document.querySelector('.dashboard-container');
+    if (!container) return;
+    
+    const sidebar = container.querySelector('.sidebar');
+    if (!sidebar) return;
+    
+    let overlay = document.querySelector('.sidebar-overlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.className = 'sidebar-overlay';
+        document.body.appendChild(overlay);
     }
+    
+    if (!document.querySelector('.mobile-topbar')) {
+        const headerTitle = document.querySelector('.content-header h1');
+        const titleText = (headerTitle ? headerTitle.textContent : 'Panel').trim();
+        
+        const topbar = document.createElement('div');
+        topbar.className = 'mobile-topbar';
+        topbar.innerHTML =
+            '<button class="mobile-menu-btn" aria-label="Open menu"><i class="fas fa-bars"></i></button>' +
+            '<span class="mobile-topbar-title"></span>' +
+            '<span class="mobile-topbar-status"><i class="fas fa-circle"></i> Online</span>';
+        topbar.querySelector('.mobile-topbar-title').textContent = titleText;
+        container.parentNode.insertBefore(topbar, container);
+    }
+    
+    if (!sidebar.querySelector('.sidebar-close')) {
+        const header = sidebar.querySelector('.sidebar-header');
+        if (header) {
+            const closeBtn = document.createElement('button');
+            closeBtn.className = 'sidebar-close';
+            closeBtn.setAttribute('aria-label', 'Close menu');
+            closeBtn.innerHTML = '<i class="fas fa-times"></i>';
+            header.appendChild(closeBtn);
+        }
+    }
+    
+    const isMobile = () => window.innerWidth <= 1024;
+    const openNav = () => {
+        if (!isMobile()) return;
+        sidebar.classList.add('open');
+        overlay.classList.add('active');
+        document.body.classList.add('nav-open');
+    };
+    const closeNav = () => {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('active');
+        document.body.classList.remove('nav-open');
+    };
+    const toggleNav = () => {
+        if (sidebar.classList.contains('open')) { closeNav(); } else { openNav(); }
+    };
+    
+    document.querySelectorAll('.mobile-menu-btn').forEach(btn => btn.addEventListener('click', toggleNav));
+    overlay.addEventListener('click', closeNav);
+    
+    const closeBtn = sidebar.querySelector('.sidebar-close');
+    if (closeBtn) closeBtn.addEventListener('click', closeNav);
+    
+    // Selecting a menu item closes the drawer (delegated so injected links work too)
+    sidebar.addEventListener('click', (e) => {
+        if (e.target.closest('.menu-item')) closeNav();
+    });
+    
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 1024) closeNav();
+    });
+    
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeNav();
+    });
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMobileLayout);
+} else {
+    initMobileLayout();
 }

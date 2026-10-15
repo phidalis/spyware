@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Parental Controls</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SOC Console">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-child"></i> Parental Panel</h2>
+                <a href="dashboard.html" class="back-btn">
+                    <i class="fas fa-arrow-left"></i> Dashboard
+                </a>
+            </div>
+
+            <div class="sidebar-menu">
+                <div class="menu-section">
+                    <h3><i class="fas fa-eye"></i> Monitoring</h3>
+                    <a href="#" class="menu-item active" data-tab="overview">
+                        <i class="fas fa-gauge-high"></i> Overview
+                    </a>
+                    <a href="#" class="menu-item" data-tab="screentime">
+                        <i class="fas fa-hourglass-half"></i> Screen Time
+                    </a>
+                    <a href="#" class="menu-item" data-tab="rules">
+                        <i class="fas fa-sliders-h"></i> App Rules
+                    </a>
+                    <a href="#" class="menu-item" data-tab="bedtime">
+                        <i class="fas fa-moon"></i> Bedtime
+                    </a>
+                    <a href="#" class="menu-item" data-tab="alerts">
+                        <i class="fas fa-bell"></i> Alerts
+                    </a>
+                </div>
+
+                <div class="menu-section">
+                    <h3><i class="fas fa-cogs"></i> Tools</h3>
+                    <a href="#" class="menu-item" id="pc-export">
+                        <i class="fas fa-file-export"></i> Export Report
+                    </a>
+                    <a href="dashboard.html" class="menu-item">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                    <a href="index.html" class="menu-item logout">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="connection-status">
+                    <i class="fas fa-circle status-online"></i>
+                    <span>Child device: <strong>Connected</strong></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="content-header">
+                <h1><i class="fas fa-child"></i> Parental Controls</h1>
+                <div class="header-actions">
+                    <button class="btn-refresh" id="pc-refresh">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+            </div>
+
+            <!-- Overview -->
+            <div class="tab-content active" id="overview-tab">
+                <div class="child-card">
+                    <div class="child-av"><i class="fas fa-user"></i></div>
+                    <div class="child-info">
+                        <h4>Lily — Child Device</h4>
+                        <p>Pixel 7a · Android 14 · Battery 64% · Last sync 2m ago</p>
+                    </div>
+                    <span class="status-pill online">CONNECTED</span>
+                </div>
+                <div class="kpi-grid" id="pc-stats"></div>
+            </div>
+
+            <!-- Screen Time -->
+            <div class="tab-content" id="screentime-tab">
+                <div class="panel">
+                    <div class="panel-head">
+                        <h3><i class="fas fa-hourglass-half"></i> Screen Time by App</h3>
+                        <span class="panel-tag">TODAY</span>
+                    </div>
+                    <div class="usage-list" id="pc-apps"></div>
+                </div>
+            </div>
+
+            <!-- App Rules -->
+            <div class="tab-content" id="rules-tab">
+                <div class="panel">
+                    <div class="panel-head">
+                        <h3><i class="fas fa-sliders-h"></i> App Rules</h3>
+                        <span class="panel-tag">ALLOW / BLOCK</span>
+                    </div>
+                    <div class="rule-list" id="pc-rules"></div>
+                </div>
+            </div>
+
+            <!-- Bedtime -->
+            <div class="tab-content" id="bedtime-tab">
+                <div class="panel">
+                    <div class="panel-head">
+                        <h3><i class="fas fa-moon"></i> Bedtime Schedule</h3>
+                    </div>
+                    <div id="pc-bedtime"></div>
+                </div>
+            </div>
+
+            <!-- Alerts -->
+            <div class="tab-content" id="alerts-tab">
+                <div class="panel">
+                    <div class="panel-head">
+                        <h3><i class="fas fa-bell"></i> Recent Alerts</h3>
+                        <span class="panel-tag">LAST 24H</span>
+                    </div>
+                    <div class="alert-list" id="pc-alerts"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="platform.js"></script>
+    <script src="modules.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            initializeParentalPanel();
+        });
+    </script>
+    <script src="pwa.js"></script>
+</body>
+</html>

@@ -2,27 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Surveillance System - Login</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SOC Console">
 </head>
 <body class="login-page">
-    <div class="warning-banner">
-        <i class="fas fa-exclamation-triangle"></i>
-        DISCLAIMER - Acessing someone without their consent is illegal
-    </div>
-    
     <div class="login-container">
         <div class="login-header">
-            <h1><i class="fas fa-user-secret"></i> Surveillance System</h1>
-            <p>Access Control Panel</p>
+            <div class="brand-badge"><i class="fas fa-shield-alt"></i></div>
+            <h1>Secure Operations Center</h1>
+            <p>Authorized access only</p>
         </div>
         
         <div class="login-box">
-            <div class="login-icon">
-                <i class="fas fa-lock"></i>
-            </div>
+            <div class="boot-console" id="boot-console"></div>
             
             <form id="login-form">
                 <div class="form-group">
@@ -56,18 +58,17 @@
             </form>
         </div>
         <div class="simulation-notice">
-            <h3><i class="fas fa-virus"></i> Simulation Mode Active</h3>
-            <p>This system cannot harm your device or targetted. It spy only and when you are done you can uninstall safely.</p>
             <button id="quick-access" class="simulation-btn">
-                <i class="fas fa-bolt"></i> Quick Access 
+                <i class="fas fa-bolt"></i> Quick Access
             </button>
         </div>
     </div>
     
     <div class="footer">
-        <p><i class="fas fa-shield-alt"></i> Created by Cybersecurity Team • All functionality is Working</p>
+        <p><i class="fas fa-shield-alt"></i> Secure Operations Center · v2.4 · <a href="about.html">About</a></p>
     </div>
     
     <script src="main.js"></script>
+    <script src="pwa.js"></script>
 </body>
 </html>

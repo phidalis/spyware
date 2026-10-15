@@ -2,18 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>WhatsApp Surveillance Panel</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SOC Console">
 </head>
 <body>
-    <div class="warning-banner">
-        <i class="fas fa-exclamation-triangle"></i>
-         DISCLAIMER - Tiktok monitoring without someone consent is illegal
-    </div>
-    
     <div class="dashboard-container">
         <!-- Sidebar -->
         <div class="sidebar">
@@ -118,9 +121,9 @@
                         </div>
                         
                         <div class="chat-input">
-                            <input type="text" placeholder="Simulate message..." disabled>
+                            <input type="text" placeholder="New message..." disabled>
                             <button class="btn-simulate" id="simulate-message">
-                                <i class="fas fa-paper-plane"></i> Simulate Message
+                                <i class="fas fa-paper-plane"></i> Add Message
                             </button>
                         </div>
                     </div>
@@ -243,11 +246,13 @@
     </div>
     
     <script src="platform.js"></script>
+    <script src="modules.js"></script>
     <script>
         // WhatsApp specific initialization
         document.addEventListener('DOMContentLoaded', function() {
             initializeWhatsAppPanel();
         });
     </script>
+    <script src="pwa.js"></script>
 </body>
 </html>
